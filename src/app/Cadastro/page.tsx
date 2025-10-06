@@ -15,7 +15,7 @@ export default function Cadastro() {
       const usuarioCriado = await criarUsuario({ nome, email, senha });
       console.log(usuarioCriado);
       toast.success("Usuário criado com sucesso!");
-      
+
     } catch (err) {
       toast.error("Erro ao criar usuário");
     }
@@ -31,26 +31,28 @@ export default function Cadastro() {
       <div className="flex items-center w-3/5 justify-center">
         <div className="bg-gray-300 w-1/2 rounded-2xl p-10 flex items-center justify-center h-1/2 ">
           <form action="" className="flex flex-col h-full gap-3 w-full" onSubmit={handleSubmit}>
-            <label htmlFor="">Nome:</label>
+            <label htmlFor="">Nome: *</label>
             <input 
               type="text" 
               className="rounded-lg border border-black p-2"
               onChange={e => setNome(e.target.value)}
-              
+              required
             />
 
-            <label htmlFor="">Email:</label>
+            <label htmlFor="">Email: *</label>
             <input 
               type="text" 
               className="rounded-lg border border-black p-2"
               onChange={e => setEmail(e.target.value)}
+              required
             />
 
-            <label htmlFor="">Senha:</label>
+            <label htmlFor="">Senha: *</label>
             <input 
               type="password" 
               className="rounded-lg border border-black p-2"
               onChange={e => setSenha(e.target.value)}
+              required
             />
 
             <button

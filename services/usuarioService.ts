@@ -12,5 +12,19 @@ async function criarUsuario(usuario: { nome: string, email: string, senha: strin
   return response.json(); // usuário criado retornado pelo back
 }
 
+async function loginUsuario({ email, senha }: { email: string, senha: string } ) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/usuarios/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, senha }),
+  });
 
-export { criarUsuario };
+  if (!response.ok) {
+    throw new Error('Erro ao fazer login');
+  }
+
+  return response.json(); // dados do usuário retornado pelo back
+}
+
+
+export { criarUsuario , loginUsuario};

@@ -1,21 +1,21 @@
 "use client";
 import { useState } from "react";
-import { criarUsuario } from "../../services/usuarioService";
+import { loginUsuario } from "../../services/usuarioService";
+import { toast } from "sonner";
 
 
 export default function Home() {
-  const [ nome, setNome ] = useState('');
   const [ email, setEmail ] = useState('');
   const [ senha, setSenha ] = useState('');
  
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      const usuarioCriado = await criarUsuario({ nome, email, senha });
+      const usuarioCriado = await loginUsuario({ email, senha });
       console.log(usuarioCriado);
-      alert('Usuário criado com sucesso!');
+      toast.success("Login realizado com sucesso!");
     } catch (err) {
-      alert('Erro ao criar usuário');
+      toast.error("Erro ao fazer login");
     }
   }
 
