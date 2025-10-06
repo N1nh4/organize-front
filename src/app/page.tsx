@@ -1,12 +1,15 @@
 "use client";
-import { useState } from "react";
+import { use, useState } from "react";
 import { loginUsuario } from "../../services/usuarioService";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 
 export default function Home() {
   const [ email, setEmail ] = useState('');
   const [ senha, setSenha ] = useState('');
+
+  const router = useRouter();
  
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -14,6 +17,8 @@ export default function Home() {
       const usuarioCriado = await loginUsuario({ email, senha });
       console.log(usuarioCriado);
       toast.success("Login realizado com sucesso!");
+      router.push('/ponto');
+
     } catch (err) {
       toast.error("Erro ao fazer login");
     }
