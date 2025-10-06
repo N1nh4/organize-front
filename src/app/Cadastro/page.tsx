@@ -1,4 +1,26 @@
+"use client";
+
+import { use, useState } from "react";
+import { criarUsuario } from "../../../services/usuarioService";
+import { toast } from "sonner";
+
 export default function Cadastro() {
+  const [ nome, setNome ] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ senha, setSenha ] = useState('');
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      const usuarioCriado = await criarUsuario({ nome, email, senha });
+      console.log(usuarioCriado);
+      toast.success("Usuário criado com sucesso!");
+      
+    } catch (err) {
+      toast.error("Erro ao criar usuário");
+    }
+  }
+
   return (
     <div className="flex h-screen">
 
@@ -8,11 +30,12 @@ export default function Cadastro() {
       
       <div className="flex items-center w-3/5 justify-center">
         <div className="bg-gray-300 w-1/2 rounded-2xl p-10 flex items-center justify-center h-1/2 ">
-          <form action="" className="flex flex-col h-full gap-3 w-full">
+          <form action="" className="flex flex-col h-full gap-3 w-full" onSubmit={handleSubmit}>
             <label htmlFor="">Nome:</label>
             <input 
               type="text" 
               className="rounded-lg border border-black p-2"
+              onChange={e => setNome(e.target.value)}
               
             />
 
@@ -20,12 +43,14 @@ export default function Cadastro() {
             <input 
               type="text" 
               className="rounded-lg border border-black p-2"
+              onChange={e => setEmail(e.target.value)}
             />
 
             <label htmlFor="">Senha:</label>
             <input 
               type="password" 
               className="rounded-lg border border-black p-2"
+              onChange={e => setSenha(e.target.value)}
             />
 
             <button
