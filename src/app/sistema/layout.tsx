@@ -14,7 +14,7 @@ export default function SistemaLayout({ children }: SistemaLayoutProps) {
             <SidebarTrigger />
        
                 
-            <main className="flex-1 overflow-y-auto mr-7 " >
+            <main id="app-content" className="flex-1 overflow-y-auto mr-7 relative " >
                 {children}
             </main>
         </SidebarProvider>

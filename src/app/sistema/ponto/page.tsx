@@ -1,3 +1,5 @@
+import { CustomDialogPortal } from "@/components/ui/custom-dialog-portal";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogPortal, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader } from "@/components/ui/sidebar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -36,10 +38,31 @@ export default function Ponto() {
                     <div className="flex flex-col gap-2 mt-auto">
                         <div className="flex bg-gray-500 rounded-sm p-2 justify-center flex-col  items-center">
                         
-                            <button className="flex cursor-pointer " >
-                                <span>Configuração de Ponto</span>
-                            </button>
+                           
+                            <Dialog>
+                                <DialogTrigger>Configuração de Ponto</DialogTrigger>
+                                <CustomDialogPortal >
+                                    <DialogContent className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                        <DialogHeader>
+                                            <DialogTitle> Configuração de Ponto </DialogTitle>
+                                            <DialogDescription>
+                                                
+                                                <div className="flex flex-col gap-2">
+                                                    <span>Meta de horas por dia:</span>
+                                                    <input
+                                                        type="time"
+                                                        className="rounded-lg border border-black p-2"
+                                                    />
+                                                </div>
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                    </DialogContent>
+
+                                </CustomDialogPortal>
+                            </Dialog>
+                            
                         </div>
+
                         <div className="flex bg-gray-500 rounded-sm p-2 justify-center flex-col  items-center">
                         
                             <button className="flex cursor-pointer " >

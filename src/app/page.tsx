@@ -33,7 +33,7 @@ export default function Home() {
       </div>
       
       <div className="flex items-center w-3/5 justify-center">
-        <div className="bg-gray-300 w-1/2 rounded-2xl p-10 flex items-center justify-center h-2/5 ">
+        <div className="bg-gray-300 w-1/2 rounded-2xl p-10 flex items-center justify-center h-96 ">
           <form action="" className="flex flex-col h-full gap-3 w-full" onSubmit={handleSubmit}>
           
 

@@ -3,11 +3,15 @@
 import { use, useState } from "react";
 import { criarUsuario } from "../../../services/usuarioService";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 
 export default function Cadastro() {
   const [ nome, setNome ] = useState('');
   const [ email, setEmail ] = useState('');
   const [ senha, setSenha ] = useState('');
+
+   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -15,6 +19,7 @@ export default function Cadastro() {
       const usuarioCriado = await criarUsuario({ nome, email, senha });
       console.log(usuarioCriado);
       toast.success("Usuário criado com sucesso!");
+      router.push('/sistema/ponto');
 
     } catch (err) {
       toast.error("Erro ao criar usuário");
@@ -29,7 +34,7 @@ export default function Cadastro() {
       </div>
       
       <div className="flex items-center w-3/5 justify-center">
-        <div className="bg-gray-300 w-1/2 rounded-2xl p-10 flex items-center justify-center h-1/2 ">
+        <div className="bg-gray-300 w-1/2 rounded-2xl p-10 flex items-center justify-center h-96 ">
           <form action="" className="flex flex-col h-full gap-3 w-full" onSubmit={handleSubmit}>
             <label htmlFor="">Nome: *</label>
             <input 
