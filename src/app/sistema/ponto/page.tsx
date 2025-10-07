@@ -1,9 +1,28 @@
+"use client";
 import { CustomDialogPortal } from "@/components/ui/custom-dialog-portal";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogPortal, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader } from "@/components/ui/sidebar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { registrarPonto } from "../../../../services/pontoService";
+import { toast } from "sonner";
 
 export default function Ponto() {
+    const [ meta, setMeta ] = useState("");
+    const [usuarioId] = useState("270a945c-b13c-4332-a659-ba72f8e4aeca");
+
+    async function handleRegistrarPonto(e: React.FormEvent) {
+
+        try {
+            const ponto = await registrarPonto({id_usuario: usuarioId, meta});
+            toast.success("Ponto registrado com sucesso!")
+        } catch {
+            toast.error("Não foi possível registrar seu ponto")
+        }
+
+    }
+
+
     return (
         <div className="flex h-full justify-center flex-col ">
             <div className="flex flex-row items-start justify-start text-start h-11 w-full mb-4">
@@ -51,6 +70,8 @@ export default function Ponto() {
                                                     <span>Meta de horas por dia:</span>
                                                     <input
                                                         type="time"
+                                                        value={meta}
+                                                        onChange={(e) => setMeta(e.target.value)}
                                                         className="rounded-lg border border-black p-2"
                                                     />
                                                 </div>
@@ -65,7 +86,7 @@ export default function Ponto() {
 
                         <div className="flex bg-gray-500 rounded-sm p-2 justify-center flex-col  items-center">
                         
-                            <button className="flex cursor-pointer " >
+                            <button onClick={handleRegistrarPonto} className="flex cursor-pointer " >
                                 <span>Registrar Ponto</span>
                             </button>
                         </div>
