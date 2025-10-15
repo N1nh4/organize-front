@@ -3,24 +3,61 @@ import { CustomDialogPortal } from "@/components/ui/custom-dialog-portal";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogPortal, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader } from "@/components/ui/sidebar";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
-import { registrarPonto } from "../../../../services/pontoService";
+import { useEffect, useState } from "react";
+import { buscarPontoDiario, registrarPonto } from "../../../../services/pontoService";
 import { toast } from "sonner";
 
 export default function Ponto() {
     const [ meta, setMeta ] = useState("");
-    const [usuarioId] = useState("270a945c-b13c-4332-a659-ba72f8e4aeca");
+    const [usuarioId] = useState("882d7da4-1cfd-4756-aaac-56f419b88fcf");
+
+    const [ponto, setPonto] = useState<{ pontoInicial: string; pontoFinal: string } | null>(null);
 
     async function handleRegistrarPonto(e: React.FormEvent) {
-
         try {
             const ponto = await registrarPonto({id_usuario: usuarioId, meta});
             toast.success("Ponto registrado com sucesso!")
+            buscarPontoHoje();
         } catch {
             toast.error("Não foi possível registrar seu ponto")
         }
-
     }
+
+    const formatHora = (isoString: string | null) => {
+        if (!isoString) return "00:00:00";
+        const date = new Date(isoString);
+        return date.toLocaleTimeString("pt-BR", { hour12: false }); // HH:MM:SS
+    };
+
+    async function buscarPontoHoje() {
+        try {
+            const hoje = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+            const pontos = await buscarPontoDiario(usuarioId, hoje);
+
+            if (pontos.length > 0) {
+            // Ordena por pontoInicial
+            const pontosOrdenados = pontos.sort(
+                (a: any, b: any) => new Date(a.pontoInicial).getTime() - new Date(b.pontoInicial).getTime()
+            );
+
+            const primeiroPonto = pontosOrdenados[0].pontoInicial;
+            const ultimoPonto = pontosOrdenados[pontosOrdenados.length - 1].pontoFinal;
+
+            setPonto({
+                pontoInicial: primeiroPonto,
+                pontoFinal: ultimoPonto
+            });
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+        }
+
+
+    useEffect(() => {
+        buscarPontoHoje();
+    }, []);
 
 
     return (
@@ -39,9 +76,9 @@ export default function Ponto() {
                         <span>01/10/2025</span>
                     </div>
                     <div className="flex justify-center">
-                        <span>00:00:00 </span>
+                        <span> {formatHora(ponto?.pontoInicial ?? null)} </span>
                         <span> - </span>
-                        <span>00:00:00</span>
+                        <span> {formatHora(ponto?.pontoFinal ?? null)} </span>
                     </div>
                     <div className="flex justify-between mt-auto mb-auto">
                         <div className="flex flex-col bg-gray-500 rounded-sm p-4">

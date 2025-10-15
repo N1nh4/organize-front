@@ -12,4 +12,18 @@ async function registrarPonto({ id_usuario, meta }: { id_usuario: string, meta: 
   return response.json(); 
 }
 
-export { registrarPonto };
+async function buscarPontoDiario(usuarioId: string, data: string) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pontos/visualizarPontoDiario?usuarioID=${usuarioId}&data=${data}`, {
+
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+  }); 
+
+  if (!response.ok) {
+    throw new Error('Erro ao buscar ponto');
+  }
+
+  return response.json();
+}
+
+export { registrarPonto, buscarPontoDiario };
