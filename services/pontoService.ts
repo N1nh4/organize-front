@@ -26,4 +26,20 @@ async function buscarPontoDiario(usuarioId: string, data: string) {
   return response.json();
 }
 
-export { registrarPonto, buscarPontoDiario };
+async function visualizarHoraTotal(usuarioId: string, data: string) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pontos/calculoHoraTotalDiarioPonto?usuarioID=${usuarioId}&data=${data}`, {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'},
+    
+  });
+
+  if (!response.ok) {
+    throw new Error('Erro ao buscar ponto');
+  }
+
+  return response.text();
+
+}
+
+
+export { registrarPonto, buscarPontoDiario, visualizarHoraTotal };

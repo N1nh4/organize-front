@@ -17,7 +17,7 @@ export default function Home() {
       const usuarioCriado = await loginUsuario({ email, senha });
       console.log(usuarioCriado);
       toast.success("Login realizado com sucesso!");
-      router.push('/ponto');
+      router.push('/sistema/ponto');
 
     } catch (err) {
       toast.error("Erro ao fazer login");
