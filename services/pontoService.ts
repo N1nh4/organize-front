@@ -37,9 +37,25 @@ async function visualizarHoraTotal(usuarioId: string, data: string) {
     throw new Error('Erro ao buscar ponto');
   }
 
+
   return response.text();
 
 }
 
+async function buscarQtsPausas(usuarioId: string, data: string) {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pontos/calculoDePausasDiariaPonto?usuarioID=${usuarioId}&data=${data}`, {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'}
+  });
 
-export { registrarPonto, buscarPontoDiario, visualizarHoraTotal };
+  if (!response.ok) {
+    throw new Error('Erro ao calcular pausas');
+  }
+
+  return response.json();
+
+}
+
+
+
+export { registrarPonto, buscarPontoDiario, visualizarHoraTotal, buscarQtsPausas };

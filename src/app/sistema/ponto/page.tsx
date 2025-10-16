@@ -11,7 +11,9 @@ export default function Ponto() {
     // temporario enquanto ainda não temos autenticação do usuario
     const [usuarioId] = useState("882d7da4-1cfd-4756-aaac-56f419b88fcf");
 
-    const { meta, setMeta, ponto, formatHora, handleRegistrarPonto, dataSelecionada, proximoDia, diaAnterior, tempoTotal } = usePonto(usuarioId);
+    const { meta, setMeta, ponto, formatHora, handleRegistrarPonto, dataSelecionada, proximoDia, diaAnterior, tempoTotal, quantidadeTotal, setRegistrouPonto, registrouPonto } = usePonto(usuarioId);
+
+    
 
     return (
         <div className="flex h-full justify-center flex-col ">
@@ -46,7 +48,7 @@ export default function Ponto() {
                         </div>
                         <div className="flex flex-col bg-gray-500 rounded-sm p-4">
                             <span>Qtd. Pausas:</span>
-                            <span>0</span>
+                            <span>{quantidadeTotal}</span>
                         </div>
                     </div>
 

@@ -11,12 +11,17 @@ export function usePonto(usuarioId: string) {
 
     const [tempoTotal, setTempoTotal] = useState<string>('');
 
+    const [quantidadeTotal, setQuantidadeTotal] = useState<string>('');
+
+    const [registrouPonto, setRegistrouPonto] = useState<boolean>(false);
+
     function diaAnterior() {
         setDataSelecionada(prev => {
             const novaData = new Date(prev);
             novaData.setDate(prev.getDate() - 1);
             return novaData;
         });
+        setRegistrouPonto(prev => !prev);
     }
 
     function proximoDia() {
@@ -25,6 +30,7 @@ export function usePonto(usuarioId: string) {
             novaData.setDate(prev.getDate() + 1);
             return novaData;
         });
+        setRegistrouPonto(prev => !prev);
     }
 
     const formatHora = (isoString: string | null) => {
@@ -60,6 +66,7 @@ export function usePonto(usuarioId: string) {
 
 
     async function handleRegistrarPonto(e: React.FormEvent) {
+        setRegistrouPonto(prev => !prev);
         try {
             const ponto = await registrarPonto({id_usuario: usuarioId, meta});
             toast.success("Ponto registrado com sucesso!")
@@ -83,28 +90,32 @@ export function usePonto(usuarioId: string) {
 
         return resultado || "0s";
     }
+    
+    async function buscarTempo() {
+    try {
+        // Converte a data selecionada para formato yyyy-MM-dd
+        const data = dataSelecionada.toISOString().split("T")[0];
 
-    useEffect(() => {
-        async function buscarTempo() {
-        try {
-            // Converte a data selecionada para formato yyyy-MM-dd
-            const data = dataSelecionada.toISOString().split("T")[0];
+        // Chama o endpoint do backend
+        const resultado = await visualizarHoraTotal(usuarioId, data);
 
-            // Chama o endpoint do backend
-            const resultado = await visualizarHoraTotal(usuarioId, data);
+        const tempoFormatado = formatarDuration(resultado);
+        
+        // Atualiza o estado com o retorno do backend
+        setTempoTotal(tempoFormatado);
+    } catch (error) {
+        console.error("Erro ao buscar tempo total:", error);
+    }
+    }
 
-            const tempoFormatado = formatarDuration(resultado);
-
-            // Atualiza o estado com o retorno do backend
-            setTempoTotal(tempoFormatado);
-        } catch (error) {
-            console.error("Erro ao buscar tempo total:", error);
-        }
-        }
+    /*useEffect(() => {
 
         buscarTempo();
-    }, [dataSelecionada, usuarioId]);
+    }, [dataSelecionada, usuarioId]);*/
 
+    useEffect(() => {
+        buscarTempo();
+    }, [registrouPonto]);
 
 
     useEffect(() => {
@@ -122,6 +133,28 @@ export function usePonto(usuarioId: string) {
         proximoDia,
         formatarDuration,
         tempoTotal,
-        setTempoTotal
+        setTempoTotal,
+        quantidadeTotal,
+        setRegistrouPonto,
+        registrouPonto
+        
     };
 }
+
+
+
+  /*async function atualizarTempoTotal() {
+        try {
+            const data = dataSelecionada.toISOString().split("T")[0];
+            const resultado = await visualizarHoraTotal(usuarioId, data);
+            const tempoFormatado = formatarDuration(resultado);
+            setTempoTotal(tempoFormatado);
+        } catch (error) {
+            console.error("Erro ao buscar tempo total:", error);
+        }
+    }
+
+    async function handleRegistrarPontoComAtualizacao(e: React.FormEvent) {
+        await handleRegistrarPonto(e); // sua função que registra o ponto
+        await atualizarTempoTotal();  // atualiza o tempo total só depois de registrar
+    }*/
